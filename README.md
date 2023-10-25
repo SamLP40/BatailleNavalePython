@@ -16,5 +16,5 @@ Lorsque le joueur tire, deux cas possibles :
 
 Le joueur coule un navire dès lors que toutes les cases adjacentes passent de True à False. Il gagne la partie dès lors qu'il n'existe plus de case marquée "True".
 
-Objectif : gagner en un minimum de tirs possuble.
+Objectif : gagner en un minimum de tirs possible.
 
