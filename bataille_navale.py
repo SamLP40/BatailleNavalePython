@@ -62,8 +62,10 @@ for _ in range(GRID_SIZE):
     for row in board:
         print(" ".join(row))
 
-cruiser={"A";4}
 while True:
-    print("Indiquez les coordonnées de votre tir (ex: A5, H9...) :")
+    shoot=int(input("Indiquez les coordonnées de votre tir (ex: (5,1), (8,7)...) :"))
+    coordinates=(int, int)
+  #  if coordinates == ships_list.__getitem__(aircraft_carrier.get(__key=)):
 
-    break
+    pass
+#    break
