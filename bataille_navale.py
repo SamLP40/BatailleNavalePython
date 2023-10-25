@@ -63,8 +63,8 @@ for _ in range(GRID_SIZE):
         print(" ".join(row))
 
 while True:
-    shoot=int(input("Indiquez les coordonnées de votre tir (ex: (5,1), (8,7)...) :"))
-    coordinates=(int, int)
+    shoot = int(input("Indiquez les coordonnées de votre tir (ex: (5,1), (8,7)...) :"))
+    coordinates = (int, int)
   #  if coordinates == ships_list.__getitem__(aircraft_carrier.get(__key=)):
 
     pass
