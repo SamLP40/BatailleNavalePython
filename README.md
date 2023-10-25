@@ -18,3 +18,6 @@ Le joueur coule un navire dès lors que toutes les cases adjacentes passent de T
 
 Objectif : gagner en un minimum de tirs possible.
 
+V2.0 (branch bataille_navale_v2)
+
+Ajout de fonctions pour optimiser le code + ajouter une grille pour rendre le jeu plus graphique.
