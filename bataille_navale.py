@@ -42,11 +42,11 @@ LETTERS = "ABCDEFGHIJ"
 # +----+---+---+---+---+---+---+---+---+---+---+
 # | 10 |   |   |   |   |   |   |   |   |   |   |
 # +----+---+---+---+---+---+---+---+---+---+---+
-aircraft_carrier = {}  # porte_avion en B2
-cruiser = {}  # croiseur en A4
-destroyer = {}  # contre_torpilleur en C5
-submarine = {}  # sous_marin en H5
-torpedo_boat = {}  # torpilleur en E9
+aircraft_carrier = {(2, 2): True, (2, 3): True, (2, 4): True, (2, 5): True, (2, 6): True}    # porte_avion en B2
+cruiser = {(4, 1):True, (5, 1): True, (6, 1): True, (7, 1): True}  # croiseur en A4
+destroyer = {(5, 3): True, (6, 3):True, (7, 3):True}  # contre_torpilleur en C5
+submarine = {(5, 8):True, (5,9):True,(5,10):True}  # sous_marin en H5
+torpedo_boat = {(9,5):True, (9,6):True}  # torpilleur en E9
 ships_list = [aircraft_carrier, cruiser, destroyer, submarine, torpedo_boat]
 
 # l'embryon de notre jeu consiste à demander à l'infini au joueur les coordonnées
@@ -62,6 +62,7 @@ for _ in range(GRID_SIZE):
     for row in board:
         print(" ".join(row))
 
+cruiser={"A";4}
 while True:
     print("Indiquez les coordonnées de votre tir (ex: A5, H9...) :")
 
