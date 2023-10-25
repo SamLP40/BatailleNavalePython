@@ -1,4 +1,4 @@
-# Bataille Navale (v1.0)
+# Bataille Navale
 
 Jeu de bataille navale : un joueur, joue contre l'ordinateur, et doit faire en sorte de toucher, puis couler les navires. La partie s'arrête lorsqu'il a coulé tous les navires.
 
