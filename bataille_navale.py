@@ -55,17 +55,64 @@ ships_list = [aircraft_carrier, cruiser, destroyer, submarine, torpedo_boat]
 # et si la partie est finie lorsque le dernier navire est coulé)
 
 #Génération du plateau de jeu
-for _ in range(GRID_SIZE):
+
+
+def create_board(GRID_SIZE):
     board = []
-    row = ["0"] * GRID_SIZE
-    board.append(row)
+    for _ in range(GRID_SIZE):
+        row = ["0"] * GRID_SIZE
+        board.append(row)
+    return board
+
+
+def display_board(board):
     for row in board:
         print(" ".join(row))
 
-while True:
-    shoot = int(input("Indiquez les coordonnées de votre tir (ex: (5,1), (8,7)...) :"))
-    coordinates = (int, int)
-  #  if coordinates == ships_list.__getitem__(aircraft_carrier.get(__key=)):
 
-    pass
-#    break
+while ships_list:
+
+    # on demande des coordonnées au joueur tant qu'il n'en fournit pas de valides
+    # (ex. : 'A1', 'H8'), puis on les transforme en des coordonnées du programme :
+    # tuple (no_ligne, no_colonne)
+        valid_coord = False
+        shot_coord = None  # pour éviter un avertissement ("can be undefined")
+
+        while not valid_coord:
+
+        # ex. d'entrée attendue : 'A1'
+            player_coord = input("Entrez les coordonnées de votre tir (ex. : 'A1', 'H8') : ")
+
+            if 2 <= len(player_coord) <= 3:
+                letter, number = player_coord[0], player_coord[1:]
+                letter = letter.upper()
+                try:
+                # détermination de line_no et column_no (comptés à partir de 1)
+                    line_no = int(number)
+                    column_no = ord(letter) - ord('A') + 1
+                    if 1 <= line_no <= GRID_SIZE and letter in LETTERS:
+                        valid_coord = True
+                        shot_coord = (line_no, column_no)
+                except ValueError:
+                    print(f"Coordonnées hors du plateau de jeu, ou invalides.")
+
+    # on regarde à présent si le tir en coord_tir touche un navire
+
+    for ship in ships_list:
+        if shot_coord in ship:
+            print('Un navire a été touché par votre tir !')
+            # on mémorise ce tir
+            ship[shot_coord] = False
+            # on regarde si le navire est coulé
+            if True not in ship.values():
+                print('Le navire touché est coulé !!')
+                # le navire est supprimé de la flotte
+                ships_list.remove(ship)
+            break
+    else:
+        print("Votre tir est tombé dans l'eau")
+
+print('Bravo, vous avez coulé tous les navires')
+
+
+#Partie 2 : se focaliser sur les fonctions et les itérables.
