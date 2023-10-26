@@ -51,6 +51,7 @@ submarine = {(5, 8):True, (5,9):True,(5,10):True}  # sous_marin en H5
 torpedo_boat = {(9,5):True, (9,6):True}  # torpilleur en E9
 ships_list = [aircraft_carrier, cruiser, destroyer, submarine, torpedo_boat]
 
+SEA, MISSED_SHOT, HIT_SHOT, SUNK_SHOT = 0, 1, 2, 3
 # l'embryon de notre jeu consiste à demander à l'infini au joueur les coordonnées
 # d'un tir, puis à indiquer si ce tir touche un navire (en mémorisant les conséquences
 # de ce tir, indiquant si le navire est coulé à la suite de plusieurs tirs convergents,
@@ -60,6 +61,7 @@ ships_list = [aircraft_carrier, cruiser, destroyer, submarine, torpedo_boat]
 
 
 #Fonction qui crée une grille, avec des caractères pour représenter chaque case.
+
 def create_board(GRID_SIZE):
     board = []
     for _ in range(GRID_SIZE):
@@ -72,10 +74,12 @@ def create_board(GRID_SIZE):
 def display_board(board):
     for row in board:
         print(" ".join(row))
+        letter = LETTERS[x]
+        print(' {}  '.format(letter), end='')
     return board
 
 
-#Fonction qui permet de demander à l'utilisateur de tirer.
+#Fonction qui permet de demander à l'utilisateur une coordonnée pour tirer..
 def ask_coord():
 
     is_valid = False
@@ -85,6 +89,7 @@ def ask_coord():
 
     # ex. d'entrée attendue : 'A1'
     if 2 <= len(player_coord) <= 3:
+
         letter, number = player_coord[0], player_coord[1:]
         letter = letter.upper()
 
@@ -98,8 +103,29 @@ def ask_coord():
                 shot = (line_no, column_no)
         except ValueError:
             print(f"Erreur : coordonnées invalides ou en dehors de la grille.")
-            pass
         return shot, is_valid
+
+
+def ship_is_hit(ship, shot_coord):
+    if shot_coord in ship:
+
+        print('Un navire a été touché par votre tir !')
+        # on mémorise ce tir
+        ship[shot_coord] = False
+
+    return shot_coord
+
+
+def ship_is_sunk(ship):
+    if True not in ship.values():
+        is_sunk = False
+        print('Le navire touché est coulé !!')
+        # le navire est supprimé de la flotte
+        ships_list.remove(ship)
+        return is_sunk
+
+#create_board()
+#display_board()
 
 
 while ships_list:
@@ -107,23 +133,17 @@ while ships_list:
     # on demande des coordonnées au joueur tant qu'il n'en fournit pas de valides
     # (ex. : 'A1', 'H8'), puis on les transforme en des coordonnées du programme :
     # tuple (no_ligne, no_colonne)
-    valid_coord = False
-    shot_coord = None
+
     while not valid_coord:
 
         ask_coord()
 
     # on regarde à présent si le tir en coord_tir touche un navire
         for ship in ships_list:
-            if shot_coord in ship:
-                print('Un navire a été touché par votre tir !')
-            # on mémorise ce tir
-                ship[shot_coord] = False
-            # on regarde si le navire est coulé
-                if True not in ship.values():
-                    print('Le navire touché est coulé !!')
-                # le navire est supprimé de la flotte
-                    ships_list.remove(ship)
+
+            ship_is_hit(ship, shot_coord)
+            ship_is_sunk(ship)
+
             break
         else:
             print("Votre tir est tombé dans l'eau")
