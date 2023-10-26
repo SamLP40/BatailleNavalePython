@@ -6,6 +6,8 @@
 # un no_ligne ou no_colonne est compris dans le programme entre 1 et 10,
 # mais pour le joueur une colonne sera identifiée par une lettre (de 'A' à 'J')
 
+valid_coord = False
+shot_coord = None  # pour éviter un avertissement ("can be undefined")
 GRID_SIZE = 10
 
 # détermination de la liste des lettres utilisées pour identifier les colonnes :
@@ -57,17 +59,47 @@ ships_list = [aircraft_carrier, cruiser, destroyer, submarine, torpedo_boat]
 #Génération du plateau de jeu
 
 
+#Fonction qui crée une grille, avec des caractères pour représenter chaque case.
 def create_board(GRID_SIZE):
     board = []
     for _ in range(GRID_SIZE):
-        row = ["0"] * GRID_SIZE
+        row = ["[]"] * GRID_SIZE
         board.append(row)
     return board
 
 
+#Fonction qui affiche une grille.
 def display_board(board):
     for row in board:
         print(" ".join(row))
+    return board
+
+
+#Fonction qui permet de demander à l'utilisateur de tirer.
+def ask_coord():
+
+    is_valid = False
+    shot = None
+
+    player_coord = input("Entrez les coordonnées de votre tir (ex. : 'A1', 'H8') : ")
+
+    # ex. d'entrée attendue : 'A1'
+    if 2 <= len(player_coord) <= 3:
+        letter, number = player_coord[0], player_coord[1:]
+        letter = letter.upper()
+
+        try:
+            # détermination de line_no et column_no (comptés à partir de 1)
+            line_no = int(number)
+            column_no = ord(letter) - ord('A') + 1
+
+            if 1 <= line_no <= GRID_SIZE and letter in LETTERS:
+                is_valid = True
+                shot = (line_no, column_no)
+        except ValueError:
+            print(f"Erreur : coordonnées invalides ou en dehors de la grille.")
+            pass
+        return shot, is_valid
 
 
 while ships_list:
@@ -75,44 +107,28 @@ while ships_list:
     # on demande des coordonnées au joueur tant qu'il n'en fournit pas de valides
     # (ex. : 'A1', 'H8'), puis on les transforme en des coordonnées du programme :
     # tuple (no_ligne, no_colonne)
-        valid_coord = False
-        shot_coord = None  # pour éviter un avertissement ("can be undefined")
+    valid_coord = False
+    shot_coord = None
+    while not valid_coord:
 
-        while not valid_coord:
-
-        # ex. d'entrée attendue : 'A1'
-            player_coord = input("Entrez les coordonnées de votre tir (ex. : 'A1', 'H8') : ")
-
-            if 2 <= len(player_coord) <= 3:
-                letter, number = player_coord[0], player_coord[1:]
-                letter = letter.upper()
-                try:
-                # détermination de line_no et column_no (comptés à partir de 1)
-                    line_no = int(number)
-                    column_no = ord(letter) - ord('A') + 1
-                    if 1 <= line_no <= GRID_SIZE and letter in LETTERS:
-                        valid_coord = True
-                        shot_coord = (line_no, column_no)
-                except ValueError:
-                    print(f"Coordonnées hors du plateau de jeu, ou invalides.")
+        ask_coord()
 
     # on regarde à présent si le tir en coord_tir touche un navire
-
-    for ship in ships_list:
-        if shot_coord in ship:
-            print('Un navire a été touché par votre tir !')
+        for ship in ships_list:
+            if shot_coord in ship:
+                print('Un navire a été touché par votre tir !')
             # on mémorise ce tir
-            ship[shot_coord] = False
+                ship[shot_coord] = False
             # on regarde si le navire est coulé
-            if True not in ship.values():
-                print('Le navire touché est coulé !!')
+                if True not in ship.values():
+                    print('Le navire touché est coulé !!')
                 # le navire est supprimé de la flotte
-                ships_list.remove(ship)
+                    ships_list.remove(ship)
             break
-    else:
-        print("Votre tir est tombé dans l'eau")
+        else:
+            print("Votre tir est tombé dans l'eau")
 
-print('Bravo, vous avez coulé tous les navires')
-
+    print('Bravo, vous avez coulé tous les navires')
+    break
 
 #Partie 2 : se focaliser sur les fonctions et les itérables.
