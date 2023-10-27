@@ -112,17 +112,20 @@ def ship_is_hit(ship, shot_coord):
         print('Un navire a été touché par votre tir !')
         # on mémorise ce tir
         ship[shot_coord] = False
-
-    return shot_coord
+        return True
+    else:
+        return False
 
 
 def ship_is_sunk(ship):
-    if True not in ship.values():
+    if True in ship.values():
         is_sunk = False
+    else:
+        is_sunk = True
         print('Le navire touché est coulé !!')
         # le navire est supprimé de la flotte
         ships_list.remove(ship)
-        return is_sunk
+    return is_sunk
 
 #create_board()
 #display_board()
@@ -133,22 +136,22 @@ while ships_list:
     # on demande des coordonnées au joueur tant qu'il n'en fournit pas de valides
     # (ex. : 'A1', 'H8'), puis on les transforme en des coordonnées du programme :
     # tuple (no_ligne, no_colonne)
-
+    valid_coord = False
     while not valid_coord:
 
-        ask_coord()
+        (shot_coord, valid_coord) = ask_coord()
 
     # on regarde à présent si le tir en coord_tir touche un navire
-        for ship in ships_list:
+    for ship in ships_list:
 
-            ship_is_hit(ship, shot_coord)
-            ship_is_sunk(ship)
-
+        if ship_is_hit(ship, shot_coord):
+            if ship_is_sunk(ship):
+                pass
             break
-        else:
-            print("Votre tir est tombé dans l'eau")
-
-    print('Bravo, vous avez coulé tous les navires')
-    break
+    else:
+        print("Votre tir est tombé dans l'eau")
+    if not ships_list:
+        print('Bravo, vous avez coulé tous les navires')
+        break
 
 #Partie 2 : se focaliser sur les fonctions et les itérables.
